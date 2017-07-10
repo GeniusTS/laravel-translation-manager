@@ -1,0 +1,36 @@
+{
+    "name": "geniusts/laravel-translation-manager",
+    "description": "A WebUI to manage translation files for Laravel, create or update existing languages files.",
+    "keywords": ["laravel", "translation", "translation manager"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.6.4",
+        "illuminate/support": "^5.3",
+        "illuminate/translation": "^5.3",
+        "league/flysystem": "^1.0",
+        "Illuminate/http": "^5.3",
+        "Illuminate/routing": "^5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "GeniusTS\\TranslationManager\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Abdul-Kader Zein-Eddin",
+            "email": "aboudeh1987@gmail.com"
+        }
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "GeniusTS\\TranslationManager\\TranslationManagerServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable"
+}
