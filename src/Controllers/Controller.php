@@ -56,7 +56,7 @@ class Controller extends BaseController
      */
     public function edit($language, $file, $namespace = null)
     {
-        $translations = $this->manager->translations($file, $namespace, $language);
+        $translations = $this->manager->translations($file, $namespace);
         $prefix = ($namespace ? "{$namespace}::" : "") . "{$this->manager->groupName($file)}.";
 
         return view(
