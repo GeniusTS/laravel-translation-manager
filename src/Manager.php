@@ -68,7 +68,7 @@ class Manager
     {
         $path = "{$this->languagesPath}{$this->directory_separator}" .
             ($namespace ? "vendor{$this->directory_separator}{$namespace}{$this->directory_separator}" : "") .
-            "{$language}{$this->directory_separator}{$filename}";
+            "{$language}{$this->directory_separator}{$filename}.php";
 
         $content = "<?php \n\n return " . var_export($translation, true) . ";";
 
@@ -114,15 +114,13 @@ class Manager
         $content = $this->pathContent($path);
 
         return $content
-            ->filter(function ($file)
-            {
+            ->filter(function ($file) {
                 return $file['type'] === 'file' && Str::endsWith($file['path'], '.php');
             })
-            ->map(function ($file) use ($path)
-            {
-                $path = preg_replace('/^\//', '', $path . DIRECTORY_SEPARATOR);
+            ->map(function ($file) use ($path) {
+                $path = ltrim($path . DIRECTORY_SEPARATOR, '/');
 
-                return Str::replaceLast($path, '', $file['path']);
+                return $this->groupName(Str::replaceLast($path, '', $file['path']));
             })
             ->flatten();
     }
