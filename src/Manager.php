@@ -82,7 +82,7 @@ class Manager
      */
     public function namespaces()
     {
-        return array_keys($this->loader->namespaces());
+        return array_keys($this->getHints());
     }
 
     /**
@@ -101,7 +101,7 @@ class Manager
         }
         else
         {
-            $namespaces = $this->loader->namespaces();
+            $namespaces = $this->getHints();
 
             if (! key_exists($namespace, $namespaces))
             {
@@ -163,6 +163,27 @@ class Manager
     public function defaultLanguage()
     {
         return config('app.fallback_locale', 'en');
+    }
+
+    /**
+     * Check if loader has namespaces method
+     * and create accessor to access hints property
+     * if doesn't have the method
+     *
+     * @return array
+     */
+    protected function getHints()
+    {
+        if (method_exists($this->loader, 'namespaces'))
+        {
+            return $this->loader->namespaces();
+        }
+
+        $accessor = \Closure::bind(function () {
+            return $this->hints;
+        }, $this->loader, $this->loader);
+
+        return $accessor();
     }
 
     /**
