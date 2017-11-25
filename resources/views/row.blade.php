@@ -20,7 +20,7 @@
         <td>{!! nl2br(htmlentities($value)) !!}</td>
         <td>
             <?php
-            $old = '';
+            $old = $key;
             $name = $key;
 
             if (isset($parent) && $parent)
