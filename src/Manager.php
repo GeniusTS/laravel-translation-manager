@@ -43,12 +43,16 @@ class Manager
     protected $languagesPath;
 
     /**
+     * @var string
+     */
+    protected $directory_separator;
+
+    /**
      * Manager constructor.
      */
     public function __construct()
     {
         $this->translator = App::make('translator');
-        $this->filesystem = new Local('/');
         $this->loader = Lang::getLoader();
         $this->languagesPath = App::langPath();
         $this->directory_separator = DIRECTORY_SEPARATOR;
@@ -67,10 +71,10 @@ class Manager
     public function exportFile($translation, $filename, $language, $namespace = null)
     {
         $path = "{$this->languagesPath}{$this->directory_separator}" .
-            ($namespace ? "vendor{$this->directory_separator}{$namespace}{$this->directory_separator}" : "") .
+            ($namespace ? "vendor{$this->directory_separator}{$namespace}{$this->directory_separator}" : '') .
             "{$language}{$this->directory_separator}{$filename}.php";
 
-        $content = "<?php \n\n return " . var_export($translation, true) . ";";
+        $content = "<?php \n\n return " . var_export($translation, true) . ';';
 
         return (bool) $this->filesystem->write($path, $content, new Config);
     }
@@ -103,7 +107,7 @@ class Manager
         {
             $namespaces = $this->getHints();
 
-            if (! key_exists($namespace, $namespaces))
+            if (! array_key_exists($namespace, $namespaces))
             {
                 throw new InvalidNamespaceException("Namespace '{$namespace}' not exist!");
             }
@@ -138,7 +142,7 @@ class Manager
     {
         $group = $this->groupName($file);
 
-        $key = ($namespace ? "{$namespace}::" : "") . $group;
+        $key = ($namespace ? "{$namespace}::" : '') . $group;
 
         return $this->translator->trans($key, [], $language ?: $this->defaultLanguage());
     }
@@ -209,7 +213,7 @@ class Manager
      */
     protected function pathContent($path = null, $recursive = false)
     {
-        return new Collection(($this->filesystem->listContents($path, $recursive)));
+        return new Collection((new Local($path ?: base_path()))->listContents('', $recursive));
     }
 
 }
