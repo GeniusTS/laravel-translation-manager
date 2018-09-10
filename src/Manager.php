@@ -33,11 +33,6 @@ class Manager
     protected $loader;
 
     /**
-     * @var \League\Flysystem\Adapter\Local
-     */
-    protected $filesystem;
-
-    /**
      * @var string
      */
     protected $languagesPath;
@@ -72,11 +67,11 @@ class Manager
     {
         $path = "{$this->languagesPath}{$this->directory_separator}" .
             ($namespace ? "vendor{$this->directory_separator}{$namespace}{$this->directory_separator}" : '') .
-            "{$language}{$this->directory_separator}{$filename}.php";
+            "{$language}{$this->directory_separator}";
 
         $content = "<?php \n\n return " . var_export($translation, true) . ';';
 
-        return (bool) $this->filesystem->write($path, $content, new Config);
+        return (bool) (new Local($path))->write("{$filename}.php", $content, new Config);
     }
 
     /**
